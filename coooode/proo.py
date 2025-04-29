@@ -119,3 +119,18 @@ ax.set_zlim(-2, 3)
 ax.set_box_aspect([1, 1, 1])
 ax.set_title("Interactive 3D Cube", fontsize=16, pad=10)
 
+# === Buttons + TextBoxes ===
+button_width = 0.18
+button_height = 0.05
+text_width = 0.05
+text_height = 0.04
+start_x = 0.05
+start_y = 0.9
+v_gap = 0.08  # Vertical gap between blocks
+small_gap = 0.04 # Gap between button and its text fields
+
+def create_labeled_textbox(x, y, label, initial=""):
+    ax_box = plt.axes([x, y, text_width, text_height])
+    fig.text(x, y + text_height + 0.005, label, fontsize=8, ha='left')
+    return TextBox(ax_box, '', initial=initial)
+
