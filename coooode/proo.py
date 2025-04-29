@@ -129,6 +129,10 @@ start_y = 0.9
 v_gap = 0.08  # Vertical gap between blocks
 small_gap = 0.04 # Gap between button and its text fields
 
+def create_labeled_textbox(x, y, label, initial=""):
+    ax_box = plt.axes([x, y, text_width, text_height])
+    fig.text(x, y + text_height + 0.005, label, fontsize=8, ha='left')
+    return TextBox(ax_box, '', initial=initial)
 
 # --- Scale ---
 scale_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Scale')
@@ -153,6 +157,24 @@ reflect_x_box = create_labeled_textbox(start_x, start_y - button_height - small_
 reflect_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Ry', "1")
 reflect_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Rz', "1")
 
+# --- Shear ---
+start_y -= (button_height + text_height + v_gap)
+shear_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Shear')
+shear_btn.on_clicked(shear)
+shear_x_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Shx', "0")
+shear_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Shy', "0")
+shear_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Shz', "0")
+
+# --- Rotate ---
+start_y -= (button_height + text_height + v_gap)
+rotate_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Rotate')
+rotate_btn.on_clicked(rotate)
+rotate_angle_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Angle', "0")
+
+# --- Reset ---
+start_y -= (button_height + text_height + v_gap)
+reset_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Reset')
+reset_btn.on_clicked(reset)
 
 
 
