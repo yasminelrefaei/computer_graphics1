@@ -27,7 +27,11 @@ def get_faces(vertices):
         [vertices[j] for j in [4,7,3,0]]
     ]
     return faces
-
+def apply_transformation(vertices, matrix):
+    ones = np.ones((vertices.shape[0], 1))
+    vertices_homogeneous = np.hstack([vertices, ones])
+    transformed_vertices = vertices_homogeneous @ matrix.T
+    return transformed_vertices[:, :3]
 
 # === Transformations ===
 def scale(event):
@@ -60,11 +64,7 @@ def reflect(event):
     ])
     transform_cube(matrix)
 
-def apply_transformation(vertices, matrix):
-    ones = np.ones((vertices.shape[0], 1))
-    vertices_homogeneous = np.hstack([vertices, ones])
-    transformed_vertices = vertices_homogeneous @ matrix.T
-    return transformed_vertices[:, :3]
+
 
 def shear(event):
     shx, shy, shz = float(shear_x_box.text), float(shear_y_box.text), float(shear_z_box.text)
@@ -101,4 +101,21 @@ def update_plot():
     faces = get_faces(cube_vertices)
     cube_poly.set_verts(faces)
     fig.canvas.draw_idle()
+
+
+# === Main Plot ===
+fig = plt.figure(figsize=(14, 8))
+
+# --- 3D Axis (Cube)
+ax = fig.add_axes([0.3, 0.1, 0.65, 0.8], projection='3d')
+cube_vertices = create_cube()
+faces = get_faces(cube_vertices)
+cube_poly = Poly3DCollection(faces, facecolors='deepskyblue', edgecolors='black', linewidths=1, alpha=0.9)
+ax.add_collection3d(cube_poly)
+
+ax.set_xlim(-2, 3)
+ax.set_ylim(-2, 3)
+ax.set_zlim(-2, 3)
+ax.set_box_aspect([1, 1, 1])
+ax.set_title("Interactive 3D Cube", fontsize=16, pad=10)
 
