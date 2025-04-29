@@ -177,4 +177,6 @@ reset_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'R
 reset_btn.on_clicked(reset)
 
 
+plt.show()
+
 
