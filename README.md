@@ -1,22 +1,53 @@
 # Computer Graphics Project 
-# Flying Paper Plane Simulation
+Interactive 3D Cube with Transformations
 
-This project simulates a flying paper plane, birds, and clouds using Python and Matplotlib. The animation involves the transformation of the paper plane with scaling, rotation, shearing, and translation. It also features moving birds and clouds to create a dynamic scene in the sky.
+This project is an interactive 3D cube visualizer built with Python, using Matplotlib and NumPy.
+It allows users to apply real-time transformations to a 3D cube through an intuitive graphical interface.
+Features
 
-## Features
-- Animated flying paper plane with transformations (scaling, rotation, shearing, translation).
-- Birds flying across the sky.
-- Moving clouds that simulate a windy day.
-- A sun in the background for a realistic setting.
+    🔵 Scaling: Resize the cube along the X, Y, and Z axes.
 
-## Requirements
-- Python 3.x
-- NumPy
-- Matplotlib
+    🔴 Translation: Move the cube in 3D space.
 
-## Installation
-To run this project, make sure you have Python and the required libraries installed. You can install the necessary libraries using the following command:
+    🟢 Reflection: Reflect the cube across different axes.
 
-```bash
-pip install numpy matplotlib
+    🟠 Shearing: Apply shear transformations for slanting effects.
 
+    🟣 Rotation: Rotate the cube around the Z-axis.
+
+    🔁 Reset: Restore the cube to its original position and size.
+
+Technologies Used
+
+    Python 3.x
+
+    Matplotlib
+
+    NumPy
+
+Installation
+
+    Make sure you have Python installed.
+
+    Install the required libraries:
+
+pip install matplotlib numpy
+
+Clone this repository and run the script:
+
+    git clone https://github.com/your-username/your-repo-name.git
+    cd your-repo-name
+    python interactive_cube.py
+
+Usage
+
+    Enter the desired values into the text fields next to each transformation.
+
+    Click the corresponding button to apply the transformation.
+
+    Click Reset to return the cube to its original state.
+
+Purpose
+
+This project is a simple demonstration of 3D transformations and matrix operations.
+It can be used for educational purposes, helping students or beginners understand how scaling, translation, rotation, reflection, and shearing work in 3D space
