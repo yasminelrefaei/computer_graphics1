@@ -130,6 +130,29 @@ v_gap = 0.08  # Vertical gap between blocks
 small_gap = 0.04 # Gap between button and its text fields
 
 
+# --- Scale ---
+scale_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Scale')
+scale_btn.on_clicked(scale)
+scale_x_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Sx', "1")
+scale_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Sy', "1")
+scale_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Sz', "1")
+
+# --- Translate ---
+start_y -= (button_height + text_height + v_gap)
+trans_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Translate')
+trans_btn.on_clicked(translate)
+trans_x_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Tx', "0")
+trans_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Ty', "0")
+trans_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Tz', "0")
+
+# --- Reflect ---
+start_y -= (button_height + text_height + v_gap)
+reflect_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Reflect')
+reflect_btn.on_clicked(reflect)
+reflect_x_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Rx', "1")
+reflect_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Ry', "1")
+reflect_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Rz', "1")
+
 
 
 
