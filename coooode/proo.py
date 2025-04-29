@@ -28,6 +28,38 @@ def get_faces(vertices):
     ]
     return faces
 
+
+# === Transformations ===
+def scale(event):
+    sx, sy, sz = float(scale_x_box.text), float(scale_y_box.text), float(scale_z_box.text)
+    matrix = np.array([
+        [sx, 0, 0, 0],
+        [0, sy, 0, 0],
+        [0, 0, sz, 0],
+        [0, 0, 0, 1]
+    ])
+    transform_cube(matrix)
+
+def translate(event):
+    tx, ty, tz = float(trans_x_box.text), float(trans_y_box.text), float(trans_z_box.text)
+    matrix = np.array([
+        [1, 0, 0, tx],
+        [0, 1, 0, ty],
+        [0, 0, 1, tz],
+        [0, 0, 0, 1]
+    ])
+    transform_cube(matrix)
+
+def reflect(event):
+    rx, ry, rz = float(reflect_x_box.text), float(reflect_y_box.text), float(reflect_z_box.text)
+    matrix = np.array([
+        [rx, 0, 0, 0],
+        [0, ry, 0, 0],
+        [0, 0, rz, 0],
+        [0, 0, 0, 1]
+    ])
+    transform_cube(matrix)
+
 def apply_transformation(vertices, matrix):
     ones = np.ones((vertices.shape[0], 1))
     vertices_homogeneous = np.hstack([vertices, ones])
