@@ -35,9 +35,10 @@ pip install matplotlib numpy
 
 Clone this repository and run the script:
 
-    git clone https://github.com/your-username/your-repo-name.git
-    cd your-repo-name
-    python interactive_cube.py
+    git clone https://github.com/yasmina/computer_graphics1.git
+cd computer_graphics1
+python interactive_cube.py
+
 
 Usage
 
