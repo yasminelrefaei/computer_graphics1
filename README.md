@@ -37,7 +37,8 @@ Clone this repository and run the script:
 
     git clone https://github.com/yasminelrefaei/computer_graphics1.git
     cd computer_graphics1
-    python interactive_cube.py
+    cd coooode
+    python proo.py
 
 
 Usage
