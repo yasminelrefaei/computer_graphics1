@@ -31,13 +31,13 @@ Installation
 
     Install the required libraries:
 
-pip install matplotlib numpy
+        pip install matplotlib numpy
 
 Clone this repository and run the script:
 
-    git clone https://github.com/yasmina/computer_graphics1.git
-cd computer_graphics1
-python interactive_cube.py
+    git clone https://github.com/yasminelrefaei/computer_graphics1.git
+    cd computer_graphics1
+    python interactive_cube.py
 
 
 Usage
