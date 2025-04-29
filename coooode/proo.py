@@ -65,3 +65,40 @@ def apply_transformation(vertices, matrix):
     vertices_homogeneous = np.hstack([vertices, ones])
     transformed_vertices = vertices_homogeneous @ matrix.T
     return transformed_vertices[:, :3]
+
+def shear(event):
+    shx, shy, shz = float(shear_x_box.text), float(shear_y_box.text), float(shear_z_box.text)
+    matrix = np.array([
+        [1, shx, shx, 0],
+        [shy, 1, shy, 0],
+        [shz, shz, 1, 0],
+        [0, 0, 0, 1]
+    ])
+    transform_cube(matrix)
+
+def rotate(event):
+    angle = np.deg2rad(float(rotate_angle_box.text))
+    cos_theta, sin_theta = np.cos(angle), np.sin(angle)
+    matrix = np.array([
+        [cos_theta, -sin_theta, 0, 0],
+        [sin_theta, cos_theta,  0, 0],
+        [0,         0,          1, 0],
+        [0,         0,          0, 1]
+    ])
+    transform_cube(matrix)
+
+def reset(event):
+    global cube_vertices
+    cube_vertices = create_cube()
+    update_plot()
+
+def transform_cube(matrix):
+    global cube_vertices
+    cube_vertices = apply_transformation(cube_vertices, matrix)
+    update_plot()
+
+def update_plot():
+    faces = get_faces(cube_vertices)
+    cube_poly.set_verts(faces)
+    fig.canvas.draw_idle()
+
