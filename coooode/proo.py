@@ -1,182 +1,35 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Button, TextBox
-from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+import matplotlib.animation as animation
 
-# === Cube Creation ===
-def create_cube():
-    vertices = np.array([
-        [0, 0, 0],
-        [1, 0, 0],
-        [1, 1, 0],
-        [0, 1, 0],
-        [0, 0, 1],
-        [1, 0, 1],
-        [1, 1, 1],
-        [0, 1, 1]
-    ])
-    return vertices
+# Paper plane shape (triangle)
+plane = np.array([
+    [0, 1, 0.5, 0],   # x-coordinates
+    [0, 0, 1, 0]      # y-coordinates
+])
 
-def get_faces(vertices):
-    faces = [
-        [vertices[j] for j in [0,1,2,3]],
-        [vertices[j] for j in [4,5,6,7]],
-        [vertices[j] for j in [0,1,5,4]],
-        [vertices[j] for j in [2,3,7,6]],
-        [vertices[j] for j in [1,2,6,5]],
-        [vertices[j] for j in [4,7,3,0]]
-    ]
-    return faces
-def apply_transformation(vertices, matrix):
-    ones = np.ones((vertices.shape[0], 1))
-    vertices_homogeneous = np.hstack([vertices, ones])
-    transformed_vertices = vertices_homogeneous @ matrix.T
-    return transformed_vertices[:, :3]
+# Bird shape (simple V)
+bird = np.array([
+    [-0.2, 0, 0.2], 
+    [0, 0.2, 0]
+])
 
-# === Transformations ===
-def scale(event):
-    sx, sy, sz = float(scale_x_box.text), float(scale_y_box.text), float(scale_z_box.text)
-    matrix = np.array([
-        [sx, 0, 0, 0],
-        [0, sy, 0, 0],
-        [0, 0, sz, 0],
-        [0, 0, 0, 1]
-    ])
-    transform_cube(matrix)
+# Cloud shape (just circles)
+cloud_centers = [
+    (-5, 4), (0, 5), (5, 4)
+]
 
-def translate(event):
-    tx, ty, tz = float(trans_x_box.text), float(trans_y_box.text), float(trans_z_box.text)
-    matrix = np.array([
-        [1, 0, 0, tx],
-        [0, 1, 0, ty],
-        [0, 0, 1, tz],
-        [0, 0, 0, 1]
-    ])
-    transform_cube(matrix)
+# Set up figure
+fig, ax = plt.subplots()
 
-def reflect(event):
-    rx, ry, rz = float(reflect_x_box.text), float(reflect_y_box.text), float(reflect_z_box.text)
-    matrix = np.array([
-        [rx, 0, 0, 0],
-        [0, ry, 0, 0],
-        [0, 0, rz, 0],
-        [0, 0, 0, 1]
-    ])
-    transform_cube(matrix)
+def draw_sun():
+    sun = plt.Circle((7, 7), 1, color='yellow')
+    ax.add_artist(sun)
 
-
-
-def shear(event):
-    shx, shy, shz = float(shear_x_box.text), float(shear_y_box.text), float(shear_z_box.text)
-    matrix = np.array([
-        [1, shx, shx, 0],
-        [shy, 1, shy, 0],
-        [shz, shz, 1, 0],
-        [0, 0, 0, 1]
-    ])
-    transform_cube(matrix)
-
-def rotate(event):
-    angle = np.deg2rad(float(rotate_angle_box.text))
-    cos_theta, sin_theta = np.cos(angle), np.sin(angle)
-    matrix = np.array([
-        [cos_theta, -sin_theta, 0, 0],
-        [sin_theta, cos_theta,  0, 0],
-        [0,         0,          1, 0],
-        [0,         0,          0, 1]
-    ])
-    transform_cube(matrix)
-
-def reset(event):
-    global cube_vertices
-    cube_vertices = create_cube()
-    update_plot()
-
-def transform_cube(matrix):
-    global cube_vertices
-    cube_vertices = apply_transformation(cube_vertices, matrix)
-    update_plot()
-
-def update_plot():
-    faces = get_faces(cube_vertices)
-    cube_poly.set_verts(faces)
-    fig.canvas.draw_idle()
-
-
-# === Main Plot ===
-fig = plt.figure(figsize=(14, 8))
-
-# --- 3D Axis (Cube)
-ax = fig.add_axes([0.3, 0.1, 0.65, 0.8], projection='3d')
-cube_vertices = create_cube()
-faces = get_faces(cube_vertices)
-cube_poly = Poly3DCollection(faces, facecolors='deepskyblue', edgecolors='black', linewidths=1, alpha=0.9)
-ax.add_collection3d(cube_poly)
-
-ax.set_xlim(-2, 3)
-ax.set_ylim(-2, 3)
-ax.set_zlim(-2, 3)
-ax.set_box_aspect([1, 1, 1])
-ax.set_title("Interactive 3D Cube", fontsize=16, pad=10)
-
-# === Buttons + TextBoxes ===
-button_width = 0.18
-button_height = 0.05
-text_width = 0.05
-text_height = 0.04
-start_x = 0.05
-start_y = 0.9
-v_gap = 0.08  # Vertical gap between blocks
-small_gap = 0.04 # Gap between button and its text fields
-
-def create_labeled_textbox(x, y, label, initial=""):
-    ax_box = plt.axes([x, y, text_width, text_height])
-    fig.text(x, y + text_height + 0.005, label, fontsize=8, ha='left')
-    return TextBox(ax_box, '', initial=initial)
-
-# --- Scale ---
-scale_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Scale')
-scale_btn.on_clicked(scale)
-scale_x_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Sx', "1")
-scale_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Sy', "1")
-scale_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Sz', "1")
-
-# --- Translate ---
-start_y -= (button_height + text_height + v_gap)
-trans_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Translate')
-trans_btn.on_clicked(translate)
-trans_x_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Tx', "0")
-trans_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Ty', "0")
-trans_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Tz', "0")
-
-# --- Reflect ---
-start_y -= (button_height + text_height + v_gap)
-reflect_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Reflect')
-reflect_btn.on_clicked(reflect)
-reflect_x_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Rx', "1")
-reflect_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Ry', "1")
-reflect_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Rz', "1")
-
-# --- Shear ---
-start_y -= (button_height + text_height + v_gap)
-shear_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Shear')
-shear_btn.on_clicked(shear)
-shear_x_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Shx', "0")
-shear_y_box = create_labeled_textbox(start_x + 0.06, start_y - button_height - small_gap, 'Shy', "0")
-shear_z_box = create_labeled_textbox(start_x + 0.12, start_y - button_height - small_gap, 'Shz', "0")
-
-# --- Rotate ---
-start_y -= (button_height + text_height + v_gap)
-rotate_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Rotate')
-rotate_btn.on_clicked(rotate)
-rotate_angle_box = create_labeled_textbox(start_x, start_y - button_height - small_gap, 'Angle', "0")
-
-# --- Reset ---
-start_y -= (button_height + text_height + v_gap)
-reset_btn = Button(plt.axes([start_x, start_y, button_width, button_height]), 'Reset')
-reset_btn.on_clicked(reset)
-
-
-plt.show()
-
-
+def draw_cloud(x, y):
+    cloud = plt.Circle((x, y), 0.8, color='lightgrey')
+    ax.add_artist(cloud)
+    cloud2 = plt.Circle((x + 0.6, y + 0.2), 0.6, color='lightgrey')
+    ax.add_artist(cloud2)
+    cloud3 = plt.Circle((x - 0.6, y + 0.2), 0.6, color='lightgrey')
+    ax.add_artist(cloud3)
