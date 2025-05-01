@@ -32,3 +32,43 @@ def rotate(part, angle_deg, origin=(0.5, 1.0)):
 
 def scale(part, scale_factor, center=(0.5, 1.0)):
     return (part - center) * scale_factor + center
+def shear(part, shear_factor_x=0.0, shear_factor_y=0.0):
+    S = np.array([
+        [1, shear_factor_x],
+        [shear_factor_y, 1]
+    ])
+    return part @ S
+
+def reflect(part, axis='x'):
+    if axis == 'x':
+        R = np.array([[1, 0], [0, -1]])
+    elif axis == 'y':
+        R = np.array([[-1, 0], [0, 1]])
+    return part @ R
+
+# Animation
+fig, ax = plt.subplots()
+ax.set_xlim(-2, 5)
+ax.set_ylim(-2, 4)
+ax.set_aspect('equal')
+ax.axis('off')
+
+robot = create_robot()
+
+def update(frame):
+    ax.clear()
+    ax.set_xlim(-2, 5)
+    ax.set_ylim(-2, 4)
+    ax.set_aspect('equal')
+    ax.axis('off')
+
+    move_x = frame * 0.03
+    walk_angle = 10 * np.sin(frame * 0.3)
+    jump_height = 0.5 * abs(np.sin(frame * 0.15))  # jumping effect
+    shear_factor = 0.2 * np.sin(frame * 0.15)     # shearing during jump
+    scale_factor = 1.0 + 0.2 * np.sin(frame * 0.2) # growing and shrinking
+
+    transformed_robot = []
+    reflected_robot = []
+    for i, part in enumerate(robot):
+        p = part.copy()
