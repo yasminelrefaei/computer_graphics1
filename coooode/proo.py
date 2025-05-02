@@ -82,3 +82,28 @@ def animate(frame):
             [0, 1, frame * 0.03],
             [0, 0, 1]
         ])
+
+plane_hom = np.vstack((plane, np.ones((1, plane.shape[1]))))
+    transformed_plane = T @ Sh @ R @ S @ plane_hom
+
+    ax.plot(transformed_plane[0], transformed_plane[1], 'o-', color='red', linewidth=3)
+
+    # Birds flying
+    for i in range(3):
+        bird_offset_x = (i * 3 + frame*0.2) % 20 - 10
+        bird_offset_y = 7 + np.sin(frame*0.2 + i)
+        bird_hom = np.vstack((bird, np.ones((1, bird.shape[1]))))
+        Tb = np.array([
+            [1, 0, bird_offset_x],
+            [0, 1, bird_offset_y],
+            [0, 0, 1]
+        ])
+        transformed_bird = Tb @ bird_hom
+        ax.plot(transformed_bird[0], transformed_bird[1], 'k-', linewidth=2)
+
+    ax.set_title("Flying Paper Plane Simulation", fontsize=14)
+
+    return []
+
+ani = animation.FuncAnimation(fig, animate, frames=200, init_func=init, interval=50, blit=True)
+plt.show()
