@@ -72,3 +72,32 @@ def update(frame):
     reflected_robot = []
     for i, part in enumerate(robot):
         p = part.copy()
+
+# Walking translation
+    p = translate(p, move_x, 0)
+    
+    # Jumping
+    p = translate(p, 0, jump_height)
+    
+    # Shearing
+    p = shear(p, shear_factor_x=shear_factor)
+    
+    # Scaling
+    p = scale(p, scale_factor, center=(0.5 + move_x, 1.0 + jump_height))
+    
+    # Limb rotations
+    if i == 2:  # left leg
+        p = rotate(p, walk_angle, origin=(0.475 + move_x, 1.0 + jump_height))
+    if i == 3:  # right leg
+        p = rotate(p, -walk_angle, origin=(0.525 + move_x, 1.0 + jump_height))
+    if i == 4:  # left arm
+        p = rotate(p, -walk_angle, origin=(0.4 + move_x, 1.7 + jump_height))
+    if i == 5:  # right arm
+        p = rotate(p, walk_angle, origin=(0.6 + move_x, 1.7 + jump_height))
+    
+    transformed_robot.append(p)
+    
+    # Reflection over x-axis (ground line at y=0)
+    pr = reflect(p, axis='x')
+    pr = translate(pr, 0, 0)  # optional offset if needed
+    reflected_robot.append(pr)
