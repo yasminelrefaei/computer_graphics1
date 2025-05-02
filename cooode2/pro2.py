@@ -101,3 +101,12 @@ def update(frame):
     pr = reflect(p, axis='x')
     pr = translate(pr, 0, 0)  # optional offset if needed
     reflected_robot.append(pr)
+
+# Draw robot
+    draw_robot(ax, transformed_robot, color='cyan', alpha=1.0)
+
+    # Draw reflection
+    draw_robot(ax, reflected_robot, color='lightblue', alpha=0.3)
+
+ani = FuncAnimation(fig, update, frames=200, interval=50)
+plt.show()
