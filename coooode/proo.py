@@ -53,3 +53,32 @@ def animate(frame):
     # Move clouds
     for cx, cy in cloud_centers:
         draw_cloud(cx + frame*0.05 % 20 - 10, cy)
+
+    # Paper plane transformations
+        scale_factor = 1 + frame * 0.01
+        rotate_angle = np.deg2rad(frame)
+        shear_factor = 0.001 * frame
+    
+        S = np.array([
+            [scale_factor, 0, 0],
+            [0, scale_factor, 0],
+            [0, 0, 1]
+        ])
+    
+        R = np.array([
+            [np.cos(rotate_angle), -np.sin(rotate_angle), 0],
+            [np.sin(rotate_angle), np.cos(rotate_angle), 0],
+            [0, 0, 1]
+        ])
+    
+        Sh = np.array([
+            [1, shear_factor, 0],
+            [shear_factor, 1, 0],
+            [0, 0, 1]
+        ])
+    
+        T = np.array([
+            [1, 0, frame * 0.05],
+            [0, 1, frame * 0.03],
+            [0, 0, 1]
+        ])
